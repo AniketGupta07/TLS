@@ -50,12 +50,12 @@ X509 * generate_x509(EVP_PKEY * pkey)
 bool write_to_disk(EVP_PKEY * pkey, X509 * x509)
 {
 
-    FILE * pkey_file = fopen("key.pem", "wb");
+    FILE * pkey_file = fopen("cakey.pem", "wb");
 
     bool ret = PEM_write_PrivateKey(pkey_file, pkey, NULL, NULL, 0, NULL, NULL);
     fclose(pkey_file);
 
-    FILE * x509_file = fopen("cert.pem", "wb");
+    FILE * x509_file = fopen("cacert.pem", "wb");
 
     ret = PEM_write_X509(x509_file, x509);
     fclose(x509_file);

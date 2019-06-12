@@ -55,6 +55,14 @@ void ShowCerts(SSL* ssl)
     char *line;
 
     cert = SSL_get_peer_certificate(ssl); /* get the server's certificate */
+    long a = SSL_get_verify_result(ssl);
+    if(a==X509_V_OK){
+      cout<<"OK";
+    }
+    else{
+      cout<<"Invalid"<<endl;
+      cout<<a<<" and "<<X509_V_OK<<endl;
+    }
     if ( cert != NULL )
     {
         printf("Server certificates:\n");
@@ -93,10 +101,20 @@ int main(int argc, char const *argv[])
 	char acClientRequest[1024] ={0};
     int bytes;
 
-
+    // if(! SSL_CTX_load_verify_locations(ctx, "~/Summer/TLS/certs/cacert.pem", NULL)){
+    //   cout<<"Failed";
+    // }
     ctx = InitCTX();
+    long a = SSL_CTX_load_verify_locations(ctx,NULL,"~/Summer/TLS/certs");
+    if (! a) {
+      cout<<"couldn't load certs";
+    }
+    else{
+      cout<<"Certificate successfully loaded"<<a;
+    }
     server = Open_Connection();
     ssl = SSL_new(ctx);      /* create new SSL connection state */
+
     SSL_set_fd(ssl, server);    /* attach the socket descriptor */
     if ( SSL_connect(ssl) == FAIL )
     {  /* perform the connection */

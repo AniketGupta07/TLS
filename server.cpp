@@ -10,12 +10,12 @@
 #include <resolv.h>
 #include "openssl/ssl.h"
 #include "openssl/err.h"
- 
+
 #define FAIL    -1
 
-using namespace std; 
- 
- 
+using namespace std;
+
+
 // Create the SSL socket and intialize the socket address structure
 int OpenListener(int port){
 	int server_fd;
@@ -42,12 +42,12 @@ int OpenListener(int port){
 	}
 	return server_fd;
 }
- 
+
 
 SSL_CTX* InitServerCTX(void)
 {   const SSL_METHOD *method;
     SSL_CTX *ctx;
- 
+
     method = TLS_server_method();  /* create new server-method instance */
     ctx = SSL_CTX_new(method);   /* create new context from method */
     if ( ctx == NULL )
@@ -79,11 +79,11 @@ void LoadCertificates(SSL_CTX* ctx, char* CertFile, char* KeyFile)
         abort();
     }
 }
- 
+
 void ShowCerts(SSL* ssl)
 {   X509 *cert;
     char *line;
- 
+
     cert = SSL_get_peer_certificate(ssl); /* Get certificates (if available) */
     if ( cert != NULL )
     {
@@ -99,7 +99,7 @@ void ShowCerts(SSL* ssl)
     else
         printf("No certificates.\n");
 }
- 
+
 void Servlet(SSL* ssl){
 	char buf[1024]={0};
 	int sd,bytes;
@@ -114,9 +114,9 @@ void Servlet(SSL* ssl){
 			string str=buf;
 			if(str=="q")break;
 			cout<<"Client Message: "<<buf<<std::endl;
-			
+
 			string msg;
-        	
+
         	cout<<"Type your Message:"<<endl;
 	        cin>>msg;
 	        int n=msg.length();
@@ -124,19 +124,19 @@ void Servlet(SSL* ssl){
 	        strcpy(arr,msg.c_str());
 	        // if(msg=="q")break;
 	        SSL_write(ssl,arr,strlen(arr));
-	        
+
 			// SSL_write(ssl,arr,strlen(arr));
-			
+
 		}
 		sd=SSL_get_fd(ssl);
 		SSL_free(ssl);
 		close(sd);
 	}
-} 
+}
 
 int main(int argc, char *argv[])
 {
-	SSL_CTX* ctx;	
+	SSL_CTX* ctx;
 	int server_fd;
 	char *portnum;
 	portnum = argv[1];
@@ -144,7 +144,7 @@ int main(int argc, char *argv[])
 	// ch
 	// struct sockaddr_in address;
 	ctx=InitServerCTX();
-	LoadCertificates(ctx,"mycert.pem","mycert.pem");
+	LoadCertificates(ctx,"sha1.crt","sha1.key");
 	server_fd = OpenListener(atoi(portnum));
 	 while (1)
     {   struct sockaddr_in addr;
