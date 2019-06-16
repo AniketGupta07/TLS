@@ -10,8 +10,10 @@ iii) g++ -o client client.cpp -lssl -lcrypto
 
 iv) ./a.out
 
-v)./server 6669
+v)./signedcert.sh
 
-vi)./client
+vi)./server 6669
+
+vii)./client
 
 Now you server-client chat application is ready :)
