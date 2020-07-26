@@ -16,4 +16,4 @@ vi)./server 6669
 
 vii)./client
 
-Now you server-client chat application is ready :)
+Now you secured server-client chat application is ready :)
